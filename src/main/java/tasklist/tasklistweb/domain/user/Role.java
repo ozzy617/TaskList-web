@@ -1,2 +1,5 @@
-package tasklist.tasklistweb.domain.user;public class Role {
+package tasklist.tasklistweb.domain.user;
+
+public enum Role {
+    ROLE_USER, ROLE_ADMIN
 }

@@ -1,2 +1,4 @@
-package tasklist.tasklistweb.web.dto.validation;public interface OnCreate {
+package tasklist.tasklistweb.web.dto.validation;
+
+public interface OnCreate {
 }

@@ -1,4 +1,4 @@
-package tasklist.tasklistweb.repository.impl;
+package tasklist.tasklistweb.repository;
 
 import tasklist.tasklistweb.domain.task.Task;
 

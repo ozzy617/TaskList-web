@@ -1,2 +1,4 @@
-package tasklist.tasklistweb.web.dto.validation;public interface OnUpdate {
+package tasklist.tasklistweb.web.dto.validation;
+
+public interface OnUpdate {
 }

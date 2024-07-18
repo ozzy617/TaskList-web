@@ -1,4 +1,4 @@
-package tasklist.tasklistweb.web.dto.mappers;
+package tasklist.tasklistweb.web.mappers;
 
 import org.mapstruct.Mapper;
 import tasklist.tasklistweb.domain.task.Task;
