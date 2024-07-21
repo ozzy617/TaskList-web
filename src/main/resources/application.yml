@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/postgres?currentSchema=tasklist
+    url: jdbc:postgresql://localhost:5433/tasklist?currentSchema=tasklist
     username: postgres
     password:
     driver-class-name: org.postgresql.Driver
@@ -8,11 +8,16 @@ spring:
     init:
       mode: always
       continue-on-error: false
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
 security:
   jwt:
-    secret: aGZiYmtiYWLZYmNpZWFpZWJsZWNLdWNLY2xhZWNhaWJlbGNhZWN3Q0CV0VXSUM=
+    secret: ZmRqc2pma3NkbmprZnNrbGxmc2Zkc2Zkcw==
     access: 3600000
     refresh: 2592000000
+logging:
+  level:
+    org.springframework.security: trace
 
 
 #      data-locations: classpath:demo_data.sql

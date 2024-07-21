@@ -2,12 +2,16 @@ package tasklist.tasklistweb.web.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-@Data
+//@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class JwtEntity implements UserDetails {
 
@@ -17,20 +21,20 @@ public class JwtEntity implements UserDetails {
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return authorities;
+//    }
+//
+//    @Override
+//    public String getPassword() {
+//        return password;
+//    }
+//
+//    @Override
+//    public String getUsername() {
+//        return username;
+//    }
 
     @Override
     public boolean isAccountNonExpired() {

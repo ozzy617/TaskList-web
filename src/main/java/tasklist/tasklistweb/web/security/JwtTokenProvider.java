@@ -30,7 +30,7 @@ public class JwtTokenProvider {
 
     private final JwtProperties jwtProperties;
 
-    private UserDetailsService userDetailsService;
+    private final  UserDetailsService userDetailsService;
     private final UserService userService;
     private Key key;
 
@@ -102,12 +102,6 @@ public class JwtTokenProvider {
                 .toString();
     }
 
-    public Authentication getAuthentication(String token) {
-        String username = getUsername(token);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-    }
-
     private String getUsername(String token) {
         return Jwts
                 .parserBuilder()
@@ -122,6 +116,12 @@ public class JwtTokenProvider {
         return roles.stream()
                 .map(Enum::name)
                 .collect(Collectors.toList());
+    }
+
+    public Authentication getAuthentication(String token) {
+        String username = getUsername(token);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
 }
