@@ -1,4 +1,12 @@
 spring:
+  cache:
+    type: redis
+    cache-names: redis-cache
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: amZqcGlpdXl5ZHNuZm5zcXZkcw==
   datasource:
     url: jdbc:postgresql://localhost:5433/tasklist?currentSchema=tasklist
     username: postgres
@@ -6,8 +14,12 @@ spring:
     driver-class-name: org.postgresql.Driver
   sql:
     init:
-      mode: always
+      mode: never
       continue-on-error: false
+  liquibase:
+    change-log: classpath:liquibase/db.changelog.yaml
+    enabled: true
+    default-schema: tasklist
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
 security:
@@ -18,6 +30,8 @@ security:
 logging:
   level:
     org.springframework.security: trace
+springdoc:
+  override-with-generic-response: false
 
 
 #      data-locations: classpath:demo_data.sql
