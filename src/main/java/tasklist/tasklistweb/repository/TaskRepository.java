@@ -15,7 +15,6 @@ public interface TaskRepository {
     List<Task> findAllByUserId(Long userId);
 
     void assignToUserById(@Param("taskId") Long taskId, @Param("usrId") Long userId);
-    //МБ ОШИБКАААААА
 
     void update(Task task);
 
