@@ -36,8 +36,8 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Cacheable(value = "UserService::getByUsername", key = "#username")
     public User getByUsername(String username) {
-        Optional<User> user = userRepository.findByUserName(username);
-        return userRepository.findByUserName(username)
+        Optional<User> user = userRepository.findByUsername(username);
+        return userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found."));
     }
 
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
     })
     public User update(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.update(user);
+        userRepository.save(user);
         return user;
     }
 
@@ -60,16 +60,16 @@ public class UserServiceImpl implements UserService {
             @Cacheable (value = "UserService::getByUsername", key = "#user.username")
     })
     public User create(User user) {
-        if (userRepository.findByUserName(user.getUsername()).isPresent()) {
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             throw new IllegalStateException("User already exists.");
         }
         if (!user.getPassword().equals(user.getPasswordConfirmation())) {
             throw new IllegalStateException("Password and password confirmation don't match.");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.create(user);
         Set<Role> roles = Set.of(Role.ROLE_USER);
-        userRepository.insertUserRole(user.getId(), Role.ROLE_USER);
+        user.setRoles(roles);
+        userRepository.save(user);
         user.setRoles(roles);
         return user;
     }
@@ -85,6 +85,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @CacheEvict(value = "UserService::getById", key = "#id")
     public void delete(Long id) {
-        userRepository.delete(id);
+        userRepository.deleteById(id);
     }
 }

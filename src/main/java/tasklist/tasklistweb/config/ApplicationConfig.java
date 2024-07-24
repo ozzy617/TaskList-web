@@ -1,5 +1,6 @@
 package tasklist.tasklistweb.config;
 
+import io.minio.MinioClient;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -24,6 +25,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import tasklist.tasklistweb.service.props.MinioProperties;
 import tasklist.tasklistweb.web.security.JwtTokenFilter;
 import tasklist.tasklistweb.web.security.JwtTokenProvider;
 import tasklist.tasklistweb.web.security.expression.CustomSecurityExceptionHandler;
@@ -37,6 +39,15 @@ public class ApplicationConfig {
 
     private final ApplicationContext applicationContext;
     private final JwtTokenProvider jwtTokenProvider;
+    private final MinioProperties minioProperties;
+
+    @Bean
+    public MinioClient minioClient() {
+        return MinioClient.builder()
+                .endpoint(minioProperties.getUrl())
+                .credentials(minioProperties.getAccessKey(), minioProperties.getSecretKey())
+                .build();
+    }
 
     @Bean
     public MethodSecurityExpressionHandler expressionHandler() {
