@@ -19,12 +19,13 @@ public class Task implements Serializable {
     private String title;
     private String description;
 
-    @Enumerated(value = EnumType.STRING )
+    @Enumerated(value = EnumType.STRING)
     private Status status;
+
     private LocalDateTime expirationDate;
 
     @Column(name = "image")
     @CollectionTable(name = "tasks_images")
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> images;
 }
