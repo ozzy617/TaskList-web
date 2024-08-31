@@ -8,13 +8,16 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tasklist.tasklistweb.domain.MailType;
 import tasklist.tasklistweb.domain.exception.ResourceNotFoundException;
 import tasklist.tasklistweb.domain.user.Role;
 import tasklist.tasklistweb.domain.user.User;
 import tasklist.tasklistweb.repository.UserRepository;
+import tasklist.tasklistweb.service.MailService;
 import tasklist.tasklistweb.service.UserService;
 
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Set;
 
 @Service
@@ -23,6 +26,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
 
     @Override
 //    @Transactional(readOnly = true)
@@ -54,10 +58,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    @Caching(cacheable = {
-            @Cacheable (value = "UserService::getById", key = "#user.id"),
-            @Cacheable (value = "UserService::getByUsername", key = "#user.username")
-    })
+//    @Caching(cacheable = {
+//            @Cacheable (value = "UserService::getById", key = "#user.id"),
+//            @Cacheable (value = "UserService::getByUsername", key = "#user.username")
+//    })
     public User create(User user) {
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             throw new IllegalStateException("User already exists.");
@@ -69,6 +73,7 @@ public class UserServiceImpl implements UserService {
         Set<Role> roles = Set.of(Role.ROLE_USER);
         user.setRoles(roles);
         userRepository.save(user);
+        mailService.sendMail(user, MailType.REGISTRATION, new Properties());
         return user;
     }
 
@@ -84,5 +89,14 @@ public class UserServiceImpl implements UserService {
     @CacheEvict(value = "UserService::getById", key = "#id")
     public void delete(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Cacheable(value = "UserService::getTaskAuthor",
+    key = "#taksId")
+    public User getTaskAuthor(Long taskId) {
+        return userRepository.findTaskAuthor(taskId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found."));
     }
 }

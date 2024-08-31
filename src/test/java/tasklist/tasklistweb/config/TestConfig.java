@@ -2,13 +2,18 @@ package tasklist.tasklistweb.config;
 
 import io.minio.MinioClient;
 import lombok.RequiredArgsConstructor;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.junit4.SpringRunner;
 import tasklist.tasklistweb.repository.TaskRepository;
 import tasklist.tasklistweb.repository.UserRepository;
 import tasklist.tasklistweb.service.AuthService;
@@ -24,6 +29,7 @@ import tasklist.tasklistweb.service.props.MinioProperties;
 import tasklist.tasklistweb.web.security.JwtTokenProvider;
 import tasklist.tasklistweb.web.security.JwtUserDetailsService;
 
+@SpringBootTest(classes = ApplicationRunner.class)
 @TestConfiguration
 @RequiredArgsConstructor
 public class TestConfig {
@@ -34,7 +40,7 @@ public class TestConfig {
 
     @Bean
     @Primary
-    public BCryptPasswordEncoder testPasswordEncoder() {
+    public PasswordEncoder testPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -53,7 +59,7 @@ public class TestConfig {
 
     @Bean
     public MinioClient minioClient() {
-        return Mockito.mock();
+        return Mockito.mock(MinioClient.class);
     }
 
     @Bean

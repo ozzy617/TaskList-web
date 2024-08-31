@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import tasklist.tasklistweb.domain.task.Task;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,5 +18,12 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
         WHERE ut.user_id = :userId
         """, nativeQuery = true)
     List<Task> findAllByUserId(@Param("userId") Long userId);
+
+    @Query(value = """
+            SELECT * FROM tasks t
+            WHERE t.expiration_date is not null
+            AND t.expiration_date between :start and :end
+            """, nativeQuery = true)
+    List<Task> findAllSoonTasks(@Param("start")Timestamp strart, @Param("end")Timestamp end);
 
 }

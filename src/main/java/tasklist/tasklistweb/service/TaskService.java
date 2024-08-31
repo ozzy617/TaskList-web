@@ -3,6 +3,7 @@ package tasklist.tasklistweb.service;
 import tasklist.tasklistweb.domain.task.Task;
 import tasklist.tasklistweb.domain.task.TaskImage;
 
+import java.time.Duration;
 import java.util.List;
 
 public interface TaskService {
@@ -18,4 +19,6 @@ public interface TaskService {
     void delete(Long id);
 
     void uploadImage(Long id, TaskImage image);
+
+    List<Task> getAllSoonTasks(Duration duration);
 }
